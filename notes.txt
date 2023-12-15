@@ -1,0 +1,31 @@
+<ReCAPTCHA
+              ref={recaptcha}
+              sitekey="6LfrNi4pAAAAAGP5fgdlDyZ2RJliulAzlUieWD2W"
+              size="invisible"
+              onChange={handleOnChange}
+            />
+
+            const handleOnChange = async (captchaValue) => {
+    // console.log(captchaValue);
+    if (!captchaValue) {
+      toast.error("Please complete the reCAPTCHA");
+    } else {
+      const res = await fetch("/api/verify", {
+        method: "POST",
+        body: JSON.stringify({ captchaValue }),
+        headers: { "Content-Type": "application/json" },
+      });
+      const response = await res.json();
+      // console.log(response);
+      if (response.success) {
+        setIsVerified(true);
+      }
+    }
+  };
+    const [isVerified, setIsVerified] = useState(false);
+  <button
+            disabled={!isVerified || loading}
+            className="bg-secondary text-white rounded-md w-full  px-3 py-2 mb-4 disabled:opacity-50"
+          >
+            Sign up
+          </button>

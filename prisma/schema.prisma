@@ -17,6 +17,7 @@ model User {
   emailVerified DateTime?
   image         String?
   password      String?
+  isAdmin       Boolean   @default(false)
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   accounts      Account[]
@@ -43,15 +44,35 @@ model Account {
 }
 
 model Address {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  userId      String   @unique @db.ObjectId
-  phonenumber String?  @default("000-000-0000")
-  street      String?
-  block       String?
-  floor       String?
-  housenumber String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId       String   @unique @db.ObjectId
+  phonenumber  String?  @default("000-000-0000")
+  street       String?
+  block        String?
+  floor        String?
+  housenumber  String?
+  isApartement Boolean? @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
   user User @relation("AddressToUser", fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Category {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  menu      Menu[]   @relation("MenuToCategory")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Menu {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String
+  image       String
+  price       String
+  categoryId  String @db.ObjectId
+
+  category Category @relation("MenuToCategory", fields: [categoryId], references: [id])
 }

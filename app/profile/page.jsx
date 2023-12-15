@@ -1,8 +1,6 @@
 import React from "react";
 import { getUser } from "../currentuser/user";
 import { redirect } from "next/navigation";
-import Image from "next/image";
-import { cn } from "@/libs/utils";
 import ProfileEdit from "@/components/profileedit";
 import ImageUploader from "@/components/imageuploader";
 import prismaDB from "@/libs/prismaDB";
@@ -33,11 +31,12 @@ const ProfilePage = async () => {
     block: userProfile.address?.block,
     floor: userProfile.address?.floor,
     housenumber: userProfile.address?.housenumber,
+    isApartement: userProfile.address?.isApartement,
+    isAdmin: userProfile.isAdmin,
   };
-
   return (
     <div className="my-8 h-screen">
-      <div className="max-w-4xl h-full mx-auto border rounded-md shadow-lg">
+      <div className="max-w-4xl h-full mx-auto bg-base backdrop-blur-sm rounded-md shadow-lg">
         <div className="flex justify-center p-4">
           <ImageUploader currentUser={currentUser} />
         </div>

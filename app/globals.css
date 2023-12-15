@@ -2,6 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
+html,
+body,
+:root {
+  height: 100vh;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0px;
+}
+table,
+th,
+td {
+  padding: 5px;
+  border: 1px solid black;
+}
 section.hero {
   display: grid;
   grid-template-columns: 1fr 2fr;
@@ -10,8 +25,9 @@ section.hero {
 input[type="text"],
 input[type="email"],
 input[type="password"],
+input[type="number"],
 input[type="tel"] {
-  @apply flex h-10 w-full rounded-md text-sm border px-3 py-2 disabled:opacity-50 disabled:cursor-not-allowed;
+  @apply flex h-10 w-full rounded-md text-sm border px-3 py-2 disabled:opacity-75 disabled:cursor-not-allowed;
 }
 input[type="text"]:disabled,
 input[type="email"]:disabled,
@@ -58,4 +74,18 @@ input[type="tel"]:disabled {
 
 .hide-animate {
   animation: hide 2s;
+}
+
+.loader {
+  width: 60px;
+  aspect-ratio: 4;
+  background: radial-gradient(circle closest-side, #007d34 90%, #0000) 0 /
+    calc(100% / 3) 100% space;
+  clip-path: inset(0 100% 0 0);
+  animation: l1 1s steps(4) infinite;
+}
+@keyframes l1 {
+  to {
+    clip-path: inset(0 -34% 0 0);
+  }
 }

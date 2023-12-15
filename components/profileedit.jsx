@@ -4,18 +4,18 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import Edit from "./ui/icons/edit";
-import { useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
 
 const ProfileEdit = ({ filteredData }) => {
-  console.log(filteredData);
   const [name, setName] = useState(filteredData.name);
   const [phone, setPhone] = useState(filteredData.phonenumber);
+  const [street, setStreet] = useState(filteredData.street);
+  const [block, setBlock] = useState(filteredData.block);
+  const [floor, setFloor] = useState(filteredData.floor);
+  const [house, setHouse] = useState(filteredData.housenumber);
   const [loading, setLoading] = useState(false);
-  const [isApartement, setIsApartement] = useState(false);
+  const [isApartement, setIsApartement] = useState(filteredData.isApartement);
+  const [isAdmin, setIsAdmin] = useState(filteredData.isAdmin);
   const [edit, setEdit] = useState(true);
-
-  const isGoogle = filteredData.emailVerified;
 
   const id = filteredData.id;
 
@@ -25,25 +25,14 @@ const ProfileEdit = ({ filteredData }) => {
     formState: { errors },
   } = useForm();
   const onSubmit = async (data) => {
-    const { phone, street } = data;
-
     const promise = new Promise(async (resolve, reject) => {
       try {
         setLoading(true);
-        {
-          !isGoogle
-            ? await fetch(`/api/profile/${id}`, {
-                method: "PATCH",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(Object.assign(data, { id })),
-              })
-            : await fetch("/api/profile", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ phone, street, id }),
-              });
-        }
-
+        await fetch("/api/profile/", {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(Object.assign(data, { id, isApartement })),
+        });
         setLoading(false);
         // window.location.reload();
         resolve();
@@ -58,9 +47,12 @@ const ProfileEdit = ({ filteredData }) => {
       error: "Something went wrong",
     });
   };
-
+  const handleChange = () => {
+    setIsApartement(true);
+  };
   return (
     <div className="max-w-md mx-auto">
+      {/* {isAdmin && <div>admin</div>} */}
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-y-2">
         <div>
           <label htmlFor="email">Email</label>
@@ -120,7 +112,10 @@ const ProfileEdit = ({ filteredData }) => {
             disabled={loading}
             name="street"
             type="text"
-            {...register("street", { minLength: 20 })}
+            value={street}
+            {...register("street", {
+              onChange: (e) => setStreet(e.target.value),
+            })}
           />
         </div>
         <div className="flex items-center gap-x-2">
@@ -128,7 +123,7 @@ const ProfileEdit = ({ filteredData }) => {
             type="checkbox"
             checked={isApartement}
             value={isApartement}
-            onChange={() => setIsApartement((prev) => !prev)}
+            onChange={handleChange}
           />
           <span>Apartement/condo</span>
         </div>
@@ -139,26 +134,35 @@ const ProfileEdit = ({ filteredData }) => {
               <input
                 type="text"
                 name="block"
+                value={block}
                 disabled={loading}
-                {...register("block")}
+                {...register("block", {
+                  onChange: (e) => setBlock(e.target.value),
+                })}
               />
             </div>
             <div>
               <label htmlFor="floor">Floor</label>
               <input
+                disabled={loading}
                 type="text"
                 name="floor"
-                disabled={loading}
-                {...register("floor")}
+                value={floor}
+                {...register("floor", {
+                  onChange: (e) => setFloor(e.target.value),
+                })}
               />
             </div>
             <div>
               <label htmlFor="number">House Number</label>
               <input
-                type="text"
-                name="number"
                 disabled={loading}
-                {...register("house")}
+                name="number"
+                type="text"
+                value={house}
+                {...register("house", {
+                  onChange: (e) => setHouse(e.target.value),
+                })}
               />
             </div>
           </div>

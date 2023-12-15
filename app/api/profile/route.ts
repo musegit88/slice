@@ -4,31 +4,42 @@ import { NextResponse } from "next/server";
 
 
 
-export async function POST(req) {
-  const body = await req.json()
-  const { id, phone, street, block, floor, house } = body
+export async function PATCH(req,) {
 
   try {
-    const profile = await prisma.user.create({
-      // where:{
-      //   id
-      // },
-      data: {
-        address: {
-          create: {
-            phonenumber: phone,
-            street: street,
-            block,
-            floor,
-            housenumber: house
-          }
-        }
-      }
-    })
-    return NextResponse.json("True for profile")
-  } catch (error) {
-    console.log("PROFILE_CREATE_FOR_GOOGLE_USER", error)
-    return new NextResponse("Internal server error", { status: 500 })
-  }
+    const body = await req.json();
+    const { name, id, phone, street, block, floor, house, isApartement } = body;
+    const session = await getServerSession();
+    const userEmail = session.user.email;
 
+    const updatedUser = await prisma.user.update(
+      {
+        where: {
+          email: userEmail
+        },
+        data: {
+          name,
+          address: {
+            update: {
+              data: {
+                phonenumber: phone,
+                street: street,
+                block,
+                floor,
+                housenumber: house,
+                isApartement
+              }
+            }
+          }
+        },
+        include: { address: true }
+      }
+    )
+
+
+    return NextResponse.json(true)
+  } catch (error) {
+    console.log("PROFILE UPDATE", error);
+    return new NextResponse("Internal server error", { status: 500 });
+  }
 }

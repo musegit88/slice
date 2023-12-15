@@ -1,5 +1,5 @@
 import Navbar from "@/components/navbar";
-import { getUser } from "../session/user";
+import { getUser } from "../currentuser/user";
 
 const AboutLayout = async ({ children }) => {
   const currentUser = await getUser();

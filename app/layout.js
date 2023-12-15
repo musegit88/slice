@@ -4,6 +4,7 @@ import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import ToasterProvider from "@/components/providers/toast-provider";
 import Provider from "@/components/providers/session-provider";
+import { ErrorBoundary } from "next/dist/client/components/error-boundary";
 
 const open_asans = Open_Sans({ subsets: ["latin"] });
 

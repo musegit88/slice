@@ -1,20 +1,19 @@
 "use client";
 
-import { cn, links } from "@/libs/utils";
+import { cn, navLinks } from "@/libs/utils";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import React, { useState } from "react";
 import Bars from "./ui/icons/bars";
 import Sidebar from "./sidebar";
 import { signOut, useSession } from "next-auth/react";
-import Image from "next/image";
+import Avatar from "@/components/ui/avatar";
 
 const Navbar = ({ currentUser }) => {
-  // console.log(currentUser);
   const router = useRouter();
   const pathname = usePathname();
   const [showSidebar, setShowSidebar] = useState(false);
-  const { data: session } = useSession();
+  // const { data: session } = useSession();
 
   const handleClick = () => {
     setShowSidebar((prev) => !prev);
@@ -40,50 +39,45 @@ const Navbar = ({ currentUser }) => {
           {/* & Spice */}
         </Link>
         <div className="hidden sm:flex items-center justify-center gap-5">
-          {links.map((link) => (
+          {navLinks.map((link) => (
             <Link
               key={link.label}
               href={link.href}
               className={cn(
+                "relative pb-[4px]",
                 pathname === link.href
                   ? "text-primary font-semibold"
                   : "text-secondary font-semibold"
               )}
             >
-              {link.label}
+              <p className="text-lg after:absolute after:w-full after:h-[4px] after:bg-primary after:bottom-0 after:left-0 after:scale-x-0 after:origin-right hover:after:scale-x-100 hover:after:origin-left hover:after:duration-500 hover:after:transition">
+                {link.label}
+              </p>
             </Link>
           ))}
-          {session?.user ? (
+          {currentUser ? (
             <div className="flex items-center gap-x-2">
+              {currentUser?.isAdmin && (
+                <Link
+                  href={"/dashboard"}
+                  className="bg-primary text-[#F2F2F2] px-4 py-1 rounded-sm cursor-pointer"
+                >
+                  Admin
+                </Link>
+              )}
               <div
-                className="bg-primary text-[#F2F2F2] px-4 py-1 rounded-full cursor-pointer"
+                className="bg-primary text-[#F2F2F2] px-4 py-1 rounded-sm cursor-pointer"
                 onClick={handleLogOut}
               >
                 Sign out
               </div>
 
-              <div
-                className="relative bg-base w-10 h-10 rounded-full cursor-pointer overflow-hidden"
-                onClick={() => router.push("/profile")}
-              >
-                {session.user?.image ? (
-                  <Image
-                    src={session.user?.image}
-                    alt={session.user.name}
-                    fill
-                    className="object-cover w-full h-full"
-                  />
-                ) : (
-                  <span className="flex items-center justify-center h-full">
-                    {session.user?.name.charAt(0).toUpperCase()}
-                  </span>
-                )}
-              </div>
+              <Avatar currentUser={currentUser} />
             </div>
           ) : (
             <Link
               href={"/login"}
-              className="bg-primary text-[#F2F2F2] px-4 py-1 rounded-full"
+              className="bg-primary text-[#F2F2F2] px-4 py-1 rounded-sm"
             >
               Sign In
             </Link>

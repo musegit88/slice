@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import React from "react";
-import { cn, links } from "@/libs/utils";
+import { cn, navLinks } from "@/libs/utils";
 
 const Sidebar = ({ handleClose, showSidebar }) => {
   return (
@@ -20,7 +20,7 @@ const Sidebar = ({ handleClose, showSidebar }) => {
           X
         </div>
         <div className="flex flex-col gap-y-8 items-center justify-center h-full sm:flex-row sm:justify-end sm:space-x-2">
-          {links.map((link) => (
+          {navLinks.map((link) => (
             <Link
               key={link.label}
               href={link.href}

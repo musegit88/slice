@@ -8,12 +8,12 @@ const Hero = () => {
     <>
       <section className="hidden md:flex md:mb-4">
         <div className="flex-1 py-20">
-          <h1 className="text-5xl lg:text-7xl font-bold leading-[54px] text-primary">
+          <h1 className="text-5xl lg:text-8xl font-bold leading-[54px] text-primary">
             Where every
             <br /> bite is a <span className="text-secondary">slice</span>
             <br /> of perfection
           </h1>
-          <p className="my-12 text-primary">
+          <p className="my-12 text-primary text-lg font-semibold ">
             Where passion and pizza come together to create a truly irresistible
             experience
           </p>

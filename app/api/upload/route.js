@@ -6,7 +6,7 @@ export async function POST(req) {
   // console.log(file.name);
   const name = file.name;
   const ext = name.split(".").slice(-1)[0];
-  console.log(ext);
+  // console.log(ext);
   // if (data.get("file")) {
   //   console.log("file found", data.get("file"));
   // }

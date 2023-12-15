@@ -10,10 +10,6 @@ import { PrismaAdapter } from "@auth/prisma-adapter"
 export const handler = NextAuth({
     adapter: PrismaAdapter(prisma),
     providers: [
-        GoogleProvider({
-            clientId: process.env.GOOGLE_CLIENT_ID,
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET
-        }),
         Credentials({
             name: "Credentials",
             credentials: {

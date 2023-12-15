@@ -7,7 +7,9 @@ const LoginLayout = ({ children }) => {
       <Link href={"/"} className="text-primary font-bold">
         Slice & Spice Pizzeria
       </Link>
-      {children}
+      <main className="block items-center justify-center h-full">
+        {children}
+      </main>
     </>
   );
 };
