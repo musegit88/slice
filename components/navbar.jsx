@@ -87,13 +87,21 @@ const Navbar = ({ currentUser }) => {
       {/* Mobile */}
       <div className="sm:hidden flex items-center justify-between">
         <Link href={"/"} className="text-primary font-bold">
-          Slice Pizzeria
+          <Image src="/logo.svg" width={100} height={100} alt="logo" />
         </Link>
-        <div
-          className={`${showSidebar} ? "show-animate" : "hide-animate"`}
-          onClick={handleClick}
-        >
-          <Bars />
+        <div className="flex items-center gap-x-1">
+          <Link
+            href={"/login"}
+            className="bg-primary text-[#F2F2F2] px-4 py-1 rounded-sm"
+          >
+            Sign In
+          </Link>
+          <div
+            className={`${showSidebar} ? "show-animate" : "hide-animate"`}
+            onClick={handleClick}
+          >
+            <Bars />
+          </div>
         </div>
       </div>
       {showSidebar && (
