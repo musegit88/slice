@@ -3,6 +3,7 @@
 import Link from "next/link";
 import React from "react";
 import { cn, navLinks } from "@/libs/utils";
+import Close from "./ui/icons/close";
 
 const Sidebar = ({ handleClose, showSidebar }) => {
   return (
@@ -15,9 +16,9 @@ const Sidebar = ({ handleClose, showSidebar }) => {
       >
         <div
           onClick={handleClose}
-          className="absolute right-6 top-4 disabled:pointer-events-none"
+          className="fixed right-6 top-5 disabled:pointer-events-none"
         >
-          X
+          <Close className="w-5 h-5" />
         </div>
         <div className="flex flex-col gap-y-8 items-center justify-center h-full sm:flex-row sm:justify-end sm:space-x-2">
           {navLinks.map((link) => (
