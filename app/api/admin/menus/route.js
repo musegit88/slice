@@ -21,7 +21,6 @@ export async function POST(req) {
         categoryId: id,
       },
     });
-    console.log(menu);
     return NextResponse.json("True");
   } catch (error) {
     console.log("MENU_POST_ERROR", error);

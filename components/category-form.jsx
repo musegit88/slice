@@ -5,6 +5,16 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { handleDelete, handleUpdate } from "@/libs/utils";
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "../components/ui/tabel";
 
 const CategoryForm = ({ filteredCategory }) => {
   const [loading, setLoading] = useState(false);
@@ -89,36 +99,31 @@ const CategoryForm = ({ filteredCategory }) => {
           </div>
         </div>
       </form>
-      <div className="my-12">
-        <div className="mx-auto max-w-xl">
-          <div className="flex flex-col gap-4 border p-2 rounded-md">
-            {filteredCategory.map((category) => (
-              <div
-                onClick={() => {
-                  setEdit(category), setValue(category.name);
-                }}
-                key={category.id}
-                className="flex items-center justify-between gap-2 border p-1 rounded-md bg-gray-500/10 cursor-pointer"
-              >
-                <div className="flex items-center gap-x-4">
-                  <span className="bg-primary/80 text-white p-1 rounded-md">
-                    Category
-                  </span>
-                  <span className="bg-blue-500/40 p-1 rounded-md">
-                    {category.name}
-                  </span>
-                </div>
-                <div className="flex items-center gap-x-4">
-                  <span className="bg-primary/80 text-white p-1 rounded-md">
-                    ID
-                  </span>{" "}
-                  <span className="bg-blue-500/40 p-1 rounded-md">
-                    {category.id}
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
+      <div className="max-w-2xl mx-auto my-8">
+        <div className="border rounded-md">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Id</TableHead>
+                <TableHead>Category</TableHead>
+              </TableRow>
+            </TableHeader>
+
+            <TableBody>
+              {filteredCategory.map((category) => (
+                <TableRow
+                  onClick={() => {
+                    setEdit(category), setValue(category.name);
+                  }}
+                  key={category.id}
+                  className="odd:bg-blue-50 even:bg-white cursor-pointer"
+                >
+                  <TableCell>{category.id}</TableCell>
+                  <TableCell>{category.name}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
         </div>
       </div>
     </>

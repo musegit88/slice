@@ -67,12 +67,14 @@ model Category {
 }
 
 model Menu {
-  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
   name        String
   description String
   image       String
   price       String
-  categoryId  String @db.ObjectId
+  categoryId  String   @db.ObjectId
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
-  category Category @relation("MenuToCategory", fields: [categoryId], references: [id])
+  category Category @relation("MenuToCategory", fields: [categoryId], references: [id], onDelete: Cascade)
 }

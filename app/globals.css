@@ -7,16 +7,7 @@ body,
 :root {
   height: 100vh;
 }
-table {
-  border-collapse: collapse;
-  border-spacing: 0px;
-}
-table,
-th,
-td {
-  padding: 5px;
-  border: 1px solid black;
-}
+
 section.hero {
   display: grid;
   grid-template-columns: 1fr 2fr;
