@@ -8,6 +8,7 @@ import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import Image from "next/image";
+import Loader from "@/components/loader";
 
 const LogIn = () => {
   const router = useRouter();
@@ -38,9 +39,10 @@ const LogIn = () => {
   return (
     <>
       {loading && (
-        <div className="fixed inset-0  bg-[#ffffff]/40 backdrop-blur-xs z-50">
-          <div class="fixed left-[50%] top-[50%] w-full loader"></div>
-        </div>
+        // <div className="fixed inset-0  bg-[#ffffff]/40 backdrop-blur-xs z-50">
+        //   <div class="fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] w-full loader"></div>
+        // </div>
+        <Loader />
       )}
       <div className="bg-base flex items-center w-full rounded-md overflow-hidden my-12 sm:my-4 shadow-lg">
         <div className="relative hidden w-1/2 h-full lg:block">

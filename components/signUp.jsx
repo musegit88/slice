@@ -80,11 +80,7 @@ const SignUp = () => {
 
   return (
     <>
-      {isLoading && (
-        <div className="fixed inset-0  bg-gray-400/40 backdrop-blur-xs z-50">
-          <div class="fixed left-[50%] top-[50%] w-full loader"></div>
-        </div>
-      )}
+      {isLoading && <Loader />}
       <div className="w-full bg-base rounded-lg shadow-lg md:mt-0 sm:max-w-md xl:p-0 ">
         <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
           <h1 className="text-xl font-bold leading-tight tracking-tight text-primary md:text-2xl text-center">

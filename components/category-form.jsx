@@ -43,7 +43,7 @@ const CategoryForm = ({ filteredCategory }) => {
     <>
       {loading && (
         <div className="fixed inset-0  bg-gray-400/40 backdrop-blur-xs z-50">
-          <div class="fixed left-[50%] top-[50%] w-full loader"></div>
+          <div className="fixed left-[50%] top-[50%] w-full loader"></div>
         </div>
       )}
       <form className="mx-auto max-w-md" onSubmit={handleSubmit(onSubmit)}>

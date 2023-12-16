@@ -36,7 +36,7 @@ const ProfilePage = async () => {
   };
   return (
     <div className="my-8 h-screen">
-      <div className="max-w-4xl h-full mx-auto bg-base backdrop-blur-sm rounded-md shadow-lg">
+      <div className="max-w-4xl h-full mx-auto border backdrop-blur-sm rounded-md shadow-lg">
         <div className="flex justify-center p-4">
           <ImageUploader currentUser={currentUser} />
         </div>

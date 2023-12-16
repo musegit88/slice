@@ -1,6 +1,7 @@
 import MenusForm from "@/components/menus-form";
 import { DataTabel } from "./components/data-tabel";
 import { columns } from "./components/columns";
+import AlertModal from "../../../../components/modals/alert-modal";
 import { format } from "date-fns";
 
 const page = async () => {
@@ -14,8 +15,10 @@ const page = async () => {
     include: {
       category: true,
     },
+    orderBy: {
+      createdAt: "desc",
+    },
   });
-  console.log(menus);
   const formatedMenu = menus.map((menu) => ({
     id: menu.id,
     name: menu.name,

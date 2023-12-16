@@ -2,8 +2,9 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 import Image from "next/image";
+import CellActions from "./cell-actions";
 
-export type Menu = {
+export type MenuColumn = {
   id: string;
   name: string;
   description: string;
@@ -13,7 +14,7 @@ export type Menu = {
   createdAt: string;
 };
 
-export const columns: ColumnDef<Menu>[] = [
+export const columns: ColumnDef<MenuColumn>[] = [
   {
     accessorKey: "name",
     header: "Name",
@@ -51,5 +52,9 @@ export const columns: ColumnDef<Menu>[] = [
   {
     accessorKey: "createdAt",
     header: "Date",
+  },
+  {
+    id: "actions",
+    cell: ({ row }) => <CellActions data={row.original} />,
   },
 ];

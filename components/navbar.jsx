@@ -8,6 +8,7 @@ import Bars from "./ui/icons/bars";
 import Sidebar from "./sidebar";
 import { signOut, useSession } from "next-auth/react";
 import Avatar from "@/components/ui/avatar";
+import Image from "next/image";
 
 const Navbar = ({ currentUser }) => {
   const router = useRouter();
@@ -35,7 +36,8 @@ const Navbar = ({ currentUser }) => {
     <>
       <div className="hidden sm:flex sm:items-center sm:justify-between">
         <Link href={"/"} className="text-primary font-bold">
-          Slice Pizzeria
+          <Image src="/logo.svg" width={100} height={100} alt="logo" />
+          {/* Slice Pizzeria */}
           {/* & Spice */}
         </Link>
         <div className="hidden sm:flex items-center justify-center gap-5">
@@ -45,9 +47,7 @@ const Navbar = ({ currentUser }) => {
               href={link.href}
               className={cn(
                 "relative pb-[4px]",
-                pathname === link.href
-                  ? "text-primary font-semibold"
-                  : "text-secondary font-semibold"
+                pathname === link.href ? "text-primary " : "text-secondary "
               )}
             >
               <p className="text-lg after:absolute after:w-full after:h-[4px] after:bg-primary after:bottom-0 after:left-0 after:scale-x-0 after:origin-right hover:after:scale-x-100 hover:after:origin-left hover:after:duration-500 hover:after:transition">
