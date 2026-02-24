@@ -2,6 +2,7 @@ import MenuItem from "./ui/menu-item-card";
 import Link from "next/link";
 import { MenuItemType } from "@/types";
 import Ribbon from "./ui/icons/ribbon";
+import { prisma } from "@/libs/prismaDB";
 
 const HomeMenu = async () => {
   const menuItems: MenuItemType[] = await prisma.menu.findMany({
