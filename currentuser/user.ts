@@ -1,7 +1,7 @@
 "use server";
 
 import { getServerSession } from "next-auth/next";
-import { handler } from "@/app/api/auth/[...nextauth]/route";
+import { GET } from "@/app/api/auth/[...nextauth]/route";
 import prisma from "@/libs/prismaDB";
 
 interface SessionProps {
@@ -13,7 +13,7 @@ interface SessionProps {
 }
 
 export async function getSession() {
-  return await getServerSession(handler);
+  return await getServerSession(GET);
 }
 
 export const getUser = async () => {
