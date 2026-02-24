@@ -6,14 +6,14 @@ export async function PUT(
   req: NextRequest,
   { params }: { params: { id: string } },
 ) {
-  // const user = await getUser();
+  const user = await getUser();
   const body = await req.json();
   const { category }: { category: string } = body;
 
-  // // check if the user is admin
-  // if (!user?.isAdmin) {
-  //   return new NextResponse("Unauthorized", { status: 401 });
-  // }
+  // check if the user is admin
+  if (!user?.isAdmin) {
+    return new NextResponse("Unauthorized", { status: 401 });
+  }
   try {
     const isExisted = await prisma.category.findFirst({
       where: {
