@@ -6,7 +6,7 @@ export async function PUT(
   req: NextRequest,
   { params }: { params: { id: string } },
 ) {
-  const user = await getUser();
+  // const user = await getUser();
   const body = await req.json();
   const { category }: { category: string } = body;
 
