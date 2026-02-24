@@ -1,7 +1,7 @@
 import { getUser } from "@/currentuser/user";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(req: NextResponse) {
+export async function POST(req: NextRequest) {
   const user = await getUser();
   const body = await req.json();
   const { category }: { category: string } = body;
