@@ -11,7 +11,7 @@ export async function PUT(
   const { category }: { category: string } = body;
 
   // check if the user is admin
-  if (!user.isAdmin) {
+  if (!user?.isAdmin) {
     return new NextResponse("Unauthorized", { status: 401 });
   }
   try {

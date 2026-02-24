@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from "next/server";
 export const GET = async (req: NextRequest) => {
   const user = await getUser();
   // check if the user is admin
-  if (!user.isAdmin) {
+  if (!user?.isAdmin) {
     return new NextResponse("Unauthorized", { status: 401 });
   }
   try {
