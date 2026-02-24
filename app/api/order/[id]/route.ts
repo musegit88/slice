@@ -23,7 +23,7 @@ export async function GET(
 }
 
 export async function PUT(
-  req: NextResponse,
+  req: NextRequest,
   { params }: { params: { id: string } },
 ) {
   try {
@@ -57,7 +57,7 @@ export async function PUT(
     }
 
     // Soft delete order
-    const deletedOrder = await prisma.order.update({
+    await prisma.order.update({
       where: {
         id: params.id,
       },
