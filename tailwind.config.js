@@ -12,6 +12,7 @@ module.exports = {
         secondary: "#E40002",
         base: "#FFF1D7",
         yellow: "#F7AD45",
+        muted: "#E2E2E2",
       },
     },
   },

@@ -6,6 +6,23 @@ html,
 body,
 :root {
   height: 100vh;
+
+  /*Hide scrollbar for Chrome, Safari and Opera*/
+  ::-webkit-scrollbar {
+    display: none;
+  }
+  /* Hide scrollbar for IE, Edge and Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.PhoneInputCountrySelect:disabled {
+  opacity: 1;
+  background: transparent;
+  pointer-events: none;
+  appearance: none;
+  -webkit-appearance: none;
+  color: transparent;
 }
 
 section.hero {
@@ -18,7 +35,7 @@ input[type="email"],
 input[type="password"],
 input[type="number"],
 input[type="tel"] {
-  @apply flex h-10 w-full rounded-md text-sm border px-3 py-2 disabled:opacity-75 disabled:cursor-not-allowed;
+  @apply flex h-8 sm:h-9 w-full rounded-md text-xs sm:text-sm border px-3 disabled:opacity-75 disabled:cursor-not-allowed;
 }
 input[type="text"]:disabled,
 input[type="email"]:disabled,
@@ -27,6 +44,12 @@ input[type="tel"]:disabled {
   @apply cursor-not-allowed;
 }
 
+input[type="text"]:focus-within,
+input[type="email"]:focus-within,
+input[type="password"]:focus-within,
+input[type="tel"]:focus-within {
+  @apply border-2 border-primary shadow-md outline-none transition-all ease-in-out;
+}
 @keyframes bounce {
   0%,
   100% {
