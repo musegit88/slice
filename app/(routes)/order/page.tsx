@@ -4,6 +4,7 @@ import { OrderType } from "@/types";
 import { redirect } from "next/navigation";
 import OrderProvider from "@/components/providers/order-providers";
 import { Suspense } from "react";
+import { prisma } from "@/libs/prismaDB";
 
 // Parent component: renders Suspense boundary
 const MyOrdersPage = async () => {

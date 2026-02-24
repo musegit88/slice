@@ -1,9 +1,10 @@
 import { getUser } from "@/currentuser/user";
+import { prisma } from "@/libs/prismaDB";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: { id: string } },
 ) {
   const user = await getUser();
 
@@ -28,7 +29,7 @@ export async function GET(
 
 export async function PUT(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: { id: string } },
 ) {
   const user = await getUser();
   const body = await req.json();

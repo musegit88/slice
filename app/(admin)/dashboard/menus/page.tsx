@@ -2,6 +2,7 @@ import CreateMenu from "@/components/create-menu";
 import { DataTabel } from "./components/data-tabel";
 import { columns } from "./components/columns";
 import { format } from "date-fns";
+import { prisma } from "@/libs/prismaDB";
 
 const menusPage = async () => {
   const menus = await prisma.menu.findMany({

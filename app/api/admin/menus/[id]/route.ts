@@ -1,3 +1,4 @@
+import { prisma } from "@/libs/prismaDB";
 import { MenuItemType } from "@/types";
 import { NextRequest, NextResponse } from "next/server";
 

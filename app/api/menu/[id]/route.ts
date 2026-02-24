@@ -1,8 +1,9 @@
+import { prisma } from "@/libs/prismaDB";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: { id: string } },
 ) {
   try {
     const menu = await prisma.menu.findMany({

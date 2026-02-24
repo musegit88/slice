@@ -1,3 +1,4 @@
+import { prisma } from "@/libs/prismaDB";
 import { NextRequest, NextResponse } from "next/server";
 import { Stripe } from "stripe";
 

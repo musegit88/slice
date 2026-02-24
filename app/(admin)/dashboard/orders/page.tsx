@@ -1,3 +1,4 @@
+import { prisma } from "@/libs/prismaDB";
 import { columns } from "./components/columns";
 import { DataTabel } from "./components/data-tabel";
 

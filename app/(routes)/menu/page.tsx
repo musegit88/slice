@@ -1,4 +1,5 @@
 import MenuList from "@/components/menu-list";
+import { prisma } from "@/libs/prismaDB";
 import { Category, MenuItemType } from "@/types";
 import { Suspense } from "react";
 

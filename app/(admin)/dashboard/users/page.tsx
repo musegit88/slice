@@ -2,6 +2,7 @@ import React from "react";
 import { DataTabel } from "./components/data-tabel";
 import { columns } from "./components/columns";
 import { format } from "date-fns";
+import { prisma } from "@/libs/prismaDB";
 
 const userspage = async () => {
   const users = await prisma.user.findMany({

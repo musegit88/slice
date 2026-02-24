@@ -4,6 +4,7 @@ import PizzaIcon from "@/components/ui/icons/pizza-icon";
 import SquareStack from "@/components/ui/icons/square-stack";
 import UsersIcon from "@/components/ui/icons/users-icon";
 import { getUser } from "@/currentuser/user";
+import { prisma } from "@/libs/prismaDB";
 import { redirect } from "next/navigation";
 
 const AdminPage = async () => {

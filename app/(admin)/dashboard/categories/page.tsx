@@ -2,6 +2,7 @@ import { DataTabel } from "./components/data-tabel";
 import { columns } from "./components/columns";
 import { format } from "date-fns";
 import CreateCategory from "@/components/create-category";
+import { prisma } from "@/libs/prismaDB";
 const page = async () => {
   const categories = await prisma.category.findMany({
     orderBy: {

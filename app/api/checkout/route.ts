@@ -1,5 +1,5 @@
 import Stripe from "stripe";
-import prisma from "@/libs/prismaDB";
+import { prisma } from "@/libs/prismaDB";
 import { NextRequest, NextResponse } from "next/server";
 import { CartItem, UserAddress } from "@/types";
 import { isValidPhoneNumber } from "libphonenumber-js";

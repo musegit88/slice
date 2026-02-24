@@ -2,7 +2,7 @@
 
 import { getServerSession } from "next-auth/next";
 import { GET } from "@/app/api/auth/[...nextauth]/route";
-import prisma from "@/libs/prismaDB";
+import { prisma } from "@/libs/prismaDB";
 
 interface SessionProps {
   user?: {

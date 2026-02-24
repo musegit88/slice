@@ -2,6 +2,7 @@ import { Suspense } from "react";
 import { redirect } from "next/navigation";
 import ProfileEdit from "@/components/profileedit";
 import { getUser } from "@/currentuser/user";
+import { prisma } from "@/libs/prismaDB";
 
 // Parent component: renders Suspense boundary
 const profilePage = () => {

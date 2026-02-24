@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
 import { isValidPhoneNumber } from "libphonenumber-js";
-
-const prisma = new PrismaClient();
+import { prisma } from "@/libs/prismaDB";
 
 export async function PUT(
   req: NextRequest,
