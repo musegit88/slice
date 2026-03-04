@@ -93,7 +93,7 @@ const Navbar = ({ currentUser }) => {
                   pathname === "/cart" && "text-primary",
                 )}
               />
-              {currentUser && (
+              {/* {currentUser && (
                 <div
                   className={cn(
                     cartItems.length > 0
@@ -103,7 +103,16 @@ const Navbar = ({ currentUser }) => {
                 >
                   <span>{cartItems.length === 0 ? "" : cartItems?.length}</span>
                 </div>
-              )}
+              )} */}
+              <div
+                className={cn(
+                  cartItems.length > 0
+                    ? "absolute -top-1 right-0 bg-secondary rounded-full w-5 h-5 text-sm text-center text-white"
+                    : "",
+                )}
+              >
+                <span>{cartItems.length === 0 ? "" : cartItems?.length}</span>
+              </div>
             </div>
           </Link>
         </div>
@@ -128,7 +137,7 @@ const Navbar = ({ currentUser }) => {
                   pathname === "/cart" && "text-primary",
                 )}
               />
-              {currentUser && (
+              {/* {currentUser && (
                 <div
                   className={cn(
                     cartItems.length > 0
@@ -140,7 +149,16 @@ const Navbar = ({ currentUser }) => {
                     {cartItems.length === 0 ? "" : cartItems.length}
                   </span>
                 </div>
-              )}
+              )} */}
+              <div
+                className={cn(
+                  cartItems.length > 0
+                    ? "absolute -top-1 right-0 bg-secondary rounded-full w-5 h-5 text-sm text-center text-white"
+                    : "",
+                )}
+              >
+                <span>{cartItems.length === 0 ? "" : cartItems?.length}</span>
+              </div>
             </div>
           </Link>
           {currentUser ? (

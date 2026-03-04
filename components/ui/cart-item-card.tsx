@@ -11,10 +11,10 @@ import Plus from "./icons/plus";
 
 const CartItemCard = ({ cartItems }) => {
   const [alertOpen, setAlertOpen] = useState(false);
+  const [deletedIndex, setDeletedIndex] = useState<number | null>(null);
 
   const { selectedItems, setSelectedItems } =
     useContext<CartContextType>(CartContext);
-
   // map cart items
   const data: Cart[] = cartItems?.map((cart: Cart) => ({
     name: cart.name,
@@ -28,25 +28,39 @@ const CartItemCard = ({ cartItems }) => {
   }));
 
   // handle delete item from cart
-  const handleDelete = async (itemId: string) => {
-    try {
-      const res = await fetch(`/api/cart/${itemId}`, {
-        method: "DELETE",
-      });
-      if (res.ok) {
-        toast.success("Item removed from cart");
-      }
+  const handleDelete = async (itemId: string | number) => {
+    // if item id is number then delete from local storage
+    if (typeof itemId === "number") {
+      const newCartItem = cartItems.filter(
+        (_, index: number) => index !== itemId,
+      );
+      const updatedCartItem = newCartItem;
+      localStorage.setItem("cart", JSON.stringify(updatedCartItem));
+      setAlertOpen(false);
+      toast.success("Item removed from cart");
       window.location.reload();
-    } catch (error) {
-      console.log(error);
-      toast.error("Failed to remove item from cart");
+    } else {
+      // if item id is string then delete from database
+      try {
+        const res = await fetch(`/api/cart/${itemId}`, {
+          method: "DELETE",
+        });
+        if (res.ok) {
+          toast.success("Item removed from cart");
+        }
+        window.location.reload();
+      } catch (error) {
+        console.log(error);
+        toast.error("Failed to remove item from cart");
+      }
     }
   };
 
   // handle selected items
   const handleSelectedItems = (
     e: React.ChangeEvent<HTMLInputElement>,
-    id: string,
+    // if the user is logged in id is string else id is the index of the item
+    id: string | number,
   ) => {
     if (e.target.checked) {
       setSelectedItems((prev) => [...prev, id]);
@@ -57,40 +71,82 @@ const CartItemCard = ({ cartItems }) => {
 
   // handle quantity selection on plus and minus button
   const handleQuantity = async (
-    itemId: string,
     currentQuantity: number,
+    // type of operation
     type: "plus" | "minus",
+    // if the user is logged in use the id of the item to update the quantity in database
+    itemId?: string,
+    // if the user is not logged in use the current index of the item to update the quantity in local storage
+    currentIndex?: number,
   ) => {
     try {
       if (type === "plus") {
-        const res = await fetch(`/api/cart/${itemId}`, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            quantity: currentQuantity + 1,
-          }),
-        });
-        if (res.ok) {
+        // if the user is logged in use the id of the item to update the quantity in database
+        if (itemId) {
+          const res = await fetch(`/api/cart/${itemId}`, {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              quantity: currentQuantity + 1,
+            }),
+          });
+          if (res.ok) {
+            toast.success("Item quantity updated");
+          }
+          window.location.reload();
+        } else {
+          // if the user is not logged in use the current index of the item to update the quantity in local storage
+          const increaseQunatity = cartItems.map(
+            (item: Cart, index: number) => {
+              if (index === currentIndex) {
+                return {
+                  ...item,
+                  quantity: item.quantity + 1,
+                };
+              }
+              return item;
+            },
+          );
+          localStorage.setItem("cart", JSON.stringify(increaseQunatity));
           toast.success("Item quantity updated");
+          window.location.reload();
         }
-        window.location.reload();
       }
       if (type === "minus") {
-        const res = await fetch(`/api/cart/${itemId}`, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            quantity: currentQuantity - 1,
-          }),
-        });
-        if (res.ok) {
+        // if the user is logged in use the id of the item to update the quantity in database
+        if (itemId) {
+          const res = await fetch(`/api/cart/${itemId}`, {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              quantity: currentQuantity - 1,
+            }),
+          });
+          if (res.ok) {
+            toast.success("Item quantity updated");
+          }
+          window.location.reload();
+        } else {
+          // if the user is not logged in use the current index of the item to update the quantity in local storage
+          const decreaseQunatity = cartItems.map(
+            (item: Cart, index: number) => {
+              if (index === currentIndex) {
+                return {
+                  ...item,
+                  quantity: item.quantity > 1 ? item.quantity - 1 : 1,
+                };
+              }
+              return item;
+            },
+          );
+          localStorage.setItem("cart", JSON.stringify(decreaseQunatity));
           toast.success("Item quantity updated");
+          window.location.reload();
         }
-        window.location.reload();
       }
     } catch (error) {
       console.log(error);
@@ -104,12 +160,12 @@ const CartItemCard = ({ cartItems }) => {
         <AlertModal
           isOpen={alertOpen}
           onClose={() => setAlertOpen(false)}
-          onConfirm={() => handleDelete(data[0].id)}
+          onConfirm={() => handleDelete(data[0].id ? data[0].id : deletedIndex)}
         />
       )}
-      {data?.map((item) => (
+      {data?.map((item, index) => (
         <div
-          key={item.id}
+          key={item.id ? item.id : index}
           className="relative bg-base w-full p-4 rounded-md overflow-hidden"
         >
           <label htmlFor="select-item" className="cursor-pointer">
@@ -117,8 +173,11 @@ const CartItemCard = ({ cartItems }) => {
               id="select-item"
               type="checkbox"
               value={item.id}
-              checked={selectedItems.includes(item.id)}
-              onChange={(e) => handleSelectedItems(e, item.id)}
+              checked={selectedItems.includes(item.id ? item.id : index)}
+              onChange={(e) =>
+                // if the user is not logged in set the index of the item to be selected else set the id of the item to be selected
+                handleSelectedItems(e, item.id ? item.id : index)
+              }
             />
           </label>
           <div className="flex flex-col gap-4 w-full">
@@ -190,7 +249,11 @@ const CartItemCard = ({ cartItems }) => {
             </div>
             {selectedItems.length <= 1 && (
               <div
-                onClick={() => setAlertOpen(true)}
+                onClick={() => {
+                  setAlertOpen(true);
+                  // set the index of the item to be deleted
+                  setDeletedIndex(index);
+                }}
                 className="absolute top-4 right-4 bg-white p-1 rounded-md cursor-pointer"
               >
                 <Trash className="w-4 h-4 sm:w-5 sm:h-5 text-secondary" />
@@ -209,7 +272,7 @@ const CartItemCard = ({ cartItems }) => {
                 <button
                   disabled={item.quantity === 1}
                   onClick={() =>
-                    handleQuantity(item.id, item.quantity, "minus")
+                    handleQuantity(item.quantity, "minus", item.id, index)
                   }
                   className="bg-secondary text-white px-2 py-1 rounded-tl-full rounded-bl-full disabled:bg-secondary/50"
                 >
@@ -219,7 +282,9 @@ const CartItemCard = ({ cartItems }) => {
                   {item.quantity}
                 </span>
                 <button
-                  onClick={() => handleQuantity(item.id, item.quantity, "plus")}
+                  onClick={() =>
+                    handleQuantity(item.quantity, "plus", item.id, index)
+                  }
                   className="bg-secondary  px-2 py-1 rounded-tr-full rounded-br-full"
                 >
                   <Plus className="w-4 h-4 text-white" />

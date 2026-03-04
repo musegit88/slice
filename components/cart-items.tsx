@@ -10,8 +10,13 @@ import SquareCheck from "./ui/icons/square-check";
 import Square from "./ui/icons/square";
 import Trash from "./ui/icons/trash";
 import { UserAddress } from "@/types";
+import { useSession } from "next-auth/react";
+import Loader from "./loader";
 
-const CartItems = ({ userAddress }: { userAddress: UserAddress[] }) => {
+const CartItems = ({ userAddress }: { userAddress?: UserAddress[] }) => {
+  const { data: session } = useSession();
+  const userEmail = session?.user?.email;
+
   const [alertOpen, setAlertOpen] = useState<boolean>(false);
 
   const {
@@ -21,6 +26,7 @@ const CartItems = ({ userAddress }: { userAddress: UserAddress[] }) => {
     selectedItems,
     setSelectedItems,
     empty,
+    clearCart,
   }: CartContextType = useContext(CartContext);
   // destructure cart items
   const data = cartItems?.map((cart: Cart) => ({
@@ -77,7 +83,9 @@ const CartItems = ({ userAddress }: { userAddress: UserAddress[] }) => {
   // select all cart items
   const handleSelectAll = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.checked) {
-      setSelectedItems(cartItems.map((item) => item.id));
+      setSelectedItems(
+        cartItems.map((item, index) => (item.id ? item.id : index)),
+      );
     } else {
       setSelectedItems([]);
     }
@@ -85,23 +93,32 @@ const CartItems = ({ userAddress }: { userAddress: UserAddress[] }) => {
 
   // delete all selected cart items
   const handleDeleteAll = async () => {
-    try {
-      const res = await fetch("/api/cart", {
-        method: "DELETE",
-        body: JSON.stringify({
-          selectedItems,
-        }),
-        headers: { "Content-Type": "application/json" },
-      });
-      if (res.ok) {
-        toast.success("Items removed from cart");
-      }
+    if (!userEmail) {
+      clearCart();
+      toast.success("Items removed from cart");
+      setAlertOpen(false);
       window.location.reload();
-    } catch (error) {
-      console.log(error);
-      toast.error("Failed to remove items from cart");
+    } else {
+      try {
+        const res = await fetch("/api/cart", {
+          method: "DELETE",
+          body: JSON.stringify({
+            selectedItems,
+          }),
+          headers: { "Content-Type": "application/json" },
+        });
+        if (res.ok) {
+          toast.success("Items removed from cart");
+        }
+        window.location.reload();
+      } catch (error) {
+        console.log(error);
+        toast.error("Failed to remove items from cart");
+      }
     }
   };
+  if (loading) return <Loader message="Loading cart items" />;
+
   return (
     <>
       <AlertModal
@@ -185,157 +202,169 @@ const CartItems = ({ userAddress }: { userAddress: UserAddress[] }) => {
                 </span>
               </div>
             </div>
-
-            {/* show default address for the user */}
-            <div className="bg-base rounded-md px-8 py-4 h-fit w-full">
-              <h1 className="text-center text-primary">Checkout</h1>
-              {userAddress.length > 0 ? (
-                <form className="flex flex-col gap-2 sm:p-4">
-                  <div>
-                    <label htmlFor="label" className="text-xs sm:text-sm">
-                      Label
-                    </label>
-                    <input
-                      title="label"
-                      name="label"
-                      type="text"
-                      disabled
-                      value={userAddress[0].label}
-                      readOnly
-                      className="border-2 border-primary shadow-md"
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor="phone" className="text-xs sm:text-sm">
-                      Phone number
-                    </label>
-                    <input
-                      title="phone"
-                      name="phone"
-                      type="tel"
-                      disabled
-                      value={userAddress[0].phoneNumber}
-                      readOnly
-                      className="border-2 border-primary shadow-md"
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor="street" className="text-xs sm:text-sm">
-                      Street name
-                    </label>
-                    <input
-                      title="street"
-                      name="street"
-                      type="text"
-                      disabled
-                      value={userAddress[0].street}
-                      readOnly
-                      className="border-2 border-primary shadow-md"
-                    />
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="number"
-                      className="truncate text-xs sm:text-sm"
-                    >
-                      House Number
-                    </label>
-                    <input
-                      title="house number"
-                      name="number"
-                      type="text"
-                      disabled
-                      value={userAddress[0].houseNumber}
-                      readOnly
-                      className="border-2 border-primary shadow-md"
-                    />
-                  </div>
-                  {userAddress[0].isApartement && (
-                    <div className="flex items-center gap-x-2">
+            {!userEmail ? (
+              <div className="bg-base rounded-md px-8 py-4 h-fit w-full">
+                {" "}
+                <p>
+                  Please{" "}
+                  <Link href={"/login"} className="text-primary">
+                    Sign in
+                  </Link>{" "}
+                  to checkout
+                </p>
+              </div>
+            ) : (
+              // {/* show default address for the user */}
+              <div className="bg-base rounded-md px-8 py-4 h-fit w-full">
+                <h1 className="text-center text-primary">Checkout</h1>
+                {userAddress.length > 0 ? (
+                  <form className="flex flex-col gap-2 sm:p-4">
+                    <div>
+                      <label htmlFor="label" className="text-xs sm:text-sm">
+                        Label
+                      </label>
                       <input
-                        title="checkbox"
-                        type="checkbox"
-                        checked={userAddress[0].isApartement}
+                        title="label"
+                        name="label"
+                        type="text"
+                        disabled
+                        value={userAddress[0].label}
                         readOnly
-                        className="cursor-pointer"
+                        className="border-2 border-primary shadow-md"
                       />
-                      <span className="text-xs sm:text-sm">
-                        Apartement/condo
-                      </span>
                     </div>
-                  )}
-                  {userAddress[0].isApartement && (
-                    <div className="flex gap-x-2">
-                      <div>
-                        <label htmlFor="block" className="text-xs sm:text-sm">
-                          Block
-                        </label>
-                        <input
-                          title="block"
-                          type="text"
-                          name="block"
-                          value={userAddress[0].block}
-                          disabled
-                          readOnly
-                          className="border-2 border-primary shadow-md"
-                        />
-                      </div>
-                      <div>
-                        <label htmlFor="floor" className="text-xs sm:text-sm">
-                          Floor
-                        </label>
-                        <input
-                          title="floor"
-                          disabled
-                          type="text"
-                          name="floor"
-                          value={userAddress[0].floor}
-                          readOnly
-                          className="border-2 border-primary shadow-md"
-                        />
-                      </div>
+                    <div>
+                      <label htmlFor="phone" className="text-xs sm:text-sm">
+                        Phone number
+                      </label>
+                      <input
+                        title="phone"
+                        name="phone"
+                        type="tel"
+                        disabled
+                        value={userAddress[0].phoneNumber}
+                        readOnly
+                        className="border-2 border-primary shadow-md"
+                      />
                     </div>
-                  )}
-
-                  {/* change address in profile */}
-                  <Link
-                    href="/profile"
-                    className="text-primary underline text-sm"
-                  >
-                    change address
-                  </Link>
-                  <div className="flex items-end h-full mt-2">
-                    <button
-                      type="button"
-                      disabled={loading || selectedItems.length > 0}
-                      onClick={checkout}
-                      className="bg-secondary text-white rounded-md w-full  px-3 py-2 mb-4 disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      Pay ${(total + deliveryFee).toFixed(2)}
-                    </button>
-                  </div>
-                </form>
-              ) : (
-                <div className="flex items-center justify-center h-full mt-4">
-                  <div className="flex items-center flex-col gap-4">
-                    <span className="text-xs sm:text-sm text-center">
-                      No address found!
-                    </span>
-                    <div className="flex items-center gap-2">
-                      <p className="text-sm md:text-lg text-secondary font-bold">
-                        Add an address in your{" "}
-                      </p>
-                      <Link
-                        href={"/profile"}
-                        className="bg-primary rounded-sm py-1 px-4 text-white text-center"
+                    <div>
+                      <label htmlFor="street" className="text-xs sm:text-sm">
+                        Street name
+                      </label>
+                      <input
+                        title="street"
+                        name="street"
+                        type="text"
+                        disabled
+                        value={userAddress[0].street}
+                        readOnly
+                        className="border-2 border-primary shadow-md"
+                      />
+                    </div>
+                    <div>
+                      <label
+                        htmlFor="number"
+                        className="truncate text-xs sm:text-sm"
                       >
-                        Profile
-                      </Link>
+                        House Number
+                      </label>
+                      <input
+                        title="house number"
+                        name="number"
+                        type="text"
+                        disabled
+                        value={userAddress[0].houseNumber}
+                        readOnly
+                        className="border-2 border-primary shadow-md"
+                      />
+                    </div>
+                    {userAddress[0].isApartement && (
+                      <div className="flex items-center gap-x-2">
+                        <input
+                          title="checkbox"
+                          type="checkbox"
+                          checked={userAddress[0].isApartement}
+                          readOnly
+                          className="cursor-pointer"
+                        />
+                        <span className="text-xs sm:text-sm">
+                          Apartement/condo
+                        </span>
+                      </div>
+                    )}
+                    {userAddress[0].isApartement && (
+                      <div className="flex gap-x-2">
+                        <div>
+                          <label htmlFor="block" className="text-xs sm:text-sm">
+                            Block
+                          </label>
+                          <input
+                            title="block"
+                            type="text"
+                            name="block"
+                            value={userAddress[0].block}
+                            disabled
+                            readOnly
+                            className="border-2 border-primary shadow-md"
+                          />
+                        </div>
+                        <div>
+                          <label htmlFor="floor" className="text-xs sm:text-sm">
+                            Floor
+                          </label>
+                          <input
+                            title="floor"
+                            disabled
+                            type="text"
+                            name="floor"
+                            value={userAddress[0].floor}
+                            readOnly
+                            className="border-2 border-primary shadow-md"
+                          />
+                        </div>
+                      </div>
+                    )}
+
+                    {/* change address in profile */}
+                    <Link
+                      href="/profile"
+                      className="text-primary underline text-sm"
+                    >
+                      change address
+                    </Link>
+                    <div className="flex items-end h-full mt-2">
+                      <button
+                        type="button"
+                        disabled={loading || selectedItems.length > 0}
+                        onClick={checkout}
+                        className="bg-secondary text-white rounded-md w-full  px-3 py-2 mb-4 disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        Pay ${(total + deliveryFee).toFixed(2)}
+                      </button>
+                    </div>
+                  </form>
+                ) : (
+                  <div className="flex items-center justify-center h-full mt-4">
+                    <div className="flex items-center flex-col gap-4">
+                      <span className="text-xs sm:text-sm text-center">
+                        No address found!
+                      </span>
+                      <div className="flex items-center gap-2">
+                        <p className="text-sm md:text-lg text-secondary font-bold">
+                          Add an address in your{" "}
+                        </p>
+                        <Link
+                          href={"/profile"}
+                          className="bg-primary rounded-sm py-1 px-4 text-white text-center"
+                        >
+                          Profile
+                        </Link>
+                      </div>
                     </div>
                   </div>
-                </div>
-              )}
-            </div>
+                )}
+              </div>
+            )}
           </div>
         )}
       </div>

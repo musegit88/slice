@@ -4,12 +4,13 @@ import Image from "next/image";
 import Close from "../ui/icons/close";
 import ShoppingCart from "../ui/icons/shopping-cart";
 import { SizesAndExtraProps, MenuItemType } from "@/types";
-import { ChangeEvent, useContext, useState, useEffect } from "react";
+import { ChangeEvent, useContext, useState } from "react";
 import { CartContext } from "../providers/cart-providers";
 import toast from "react-hot-toast";
 import Minus from "../ui/icons/minus";
 import Plus from "../ui/icons/plus";
 import { cn } from "@/libs/utils";
+import { useSession } from "next-auth/react";
 
 interface MenuModalProps {
   isOpen: boolean;
@@ -18,6 +19,9 @@ interface MenuModalProps {
 }
 
 const MenuModal = ({ isOpen, onClose, selected }: MenuModalProps) => {
+  const { data: session } = useSession();
+  const userEmail = session?.user?.email;
+
   // Set initial selected size for the selected item if it has sizes
   const [selectedSizes, setSelectedSizes] = useState<SizesAndExtraProps>(
     selected?.[0]?.sizes[0] || null,
@@ -66,31 +70,43 @@ const MenuModal = ({ isOpen, onClose, selected }: MenuModalProps) => {
 
   const { addToCart }: any = useContext(CartContext);
   const handleAddToCart = async () => {
-    // if (!userEmail) {
-    //   addToCart(selected, selectedSizes, selectedExtras, selectedPrice);
-    // }
-    try {
-      await fetch("/api/cart", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          menuId: selected[0].id,
-          name: selected[0].name,
-          image: selected[0].image,
-          basePrice: selected[0].price,
-          totalPrice: selectedPrice[0],
-          sizes: selectedSizes ? selectedSizes : [],
-          extras: selectedExtras,
-          quantity: quantity,
-        }),
-      });
-      toast.success("Item added to cart");
-      window.location.reload();
-    } catch (error) {
-      console.log(error);
-      toast.error("Failed to add to cart");
+    if (userEmail) {
+      // if the user is logged in add to database
+      try {
+        await fetch("/api/cart", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            menuId: selected[0].id,
+            name: selected[0].name,
+            image: selected[0].image,
+            basePrice: selected[0].price,
+            totalPrice: selectedPrice[0],
+            sizes: selectedSizes ? selectedSizes : [],
+            extras: selectedExtras,
+            quantity: quantity,
+          }),
+        });
+        toast.success("Item added to cart");
+        window.location.reload();
+      } catch (error) {
+        console.log(error);
+        toast.error("Failed to add to cart");
+      }
+    } else {
+      // if the user is not logged in add to local storage
+      addToCart(
+        selected[0].id,
+        selected[0].name,
+        selected[0].image,
+        selected[0].price,
+        selectedPrice[0],
+        selectedSizes ? selectedSizes : [],
+        selectedExtras,
+        quantity,
+      );
     }
 
     onClose();
