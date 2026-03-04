@@ -54,8 +54,9 @@ export type UserAddressType = {
 };
 
 export type CartItemsType = {
-  name: string;
   id: string;
+  menuId: string;
+  name: string;
   image?: string;
   basePrice: number;
   totalPrice: number;
@@ -65,6 +66,8 @@ export type CartItemsType = {
     extraPrice: number;
   }[];
   extras: { name: string; extraPrice: number }[];
+  createdAt?: Date;
+  updatedAt?: Date;
 }[];
 
 export type OrderType = {
@@ -106,7 +109,7 @@ export interface UserAddress {
 
 export interface CartItem {
   name: string;
-  id: string;
+  id?: string;
   menuId: string;
   basePrice: number;
   sizes: SizesAndExtraProps[];
