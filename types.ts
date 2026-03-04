@@ -109,7 +109,7 @@ export interface UserAddress {
 
 export interface CartItem {
   name: string;
-  id?: string;
+  id: string;
   menuId: string;
   basePrice: number;
   sizes: SizesAndExtraProps[];

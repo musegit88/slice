@@ -1,9 +1,21 @@
 "use client";
 
-import { CartItem, SizesAndExtraProps } from "@/types";
+import { SizesAndExtraProps } from "@/types";
 import { useSession } from "next-auth/react";
 import React, { createContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
+
+interface CartItem {
+  name: string;
+  id?: string;
+  menuId: string;
+  basePrice: number;
+  sizes: SizesAndExtraProps[];
+  extras: SizesAndExtraProps[];
+  quantity: number;
+  image: string;
+  totalPrice: number;
+}
 
 export interface CartContextType {
   cartItems: CartItem[];
