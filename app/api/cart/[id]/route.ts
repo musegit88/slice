@@ -27,12 +27,29 @@ export async function PUT(
   try {
     const body = await req.json();
     const { quantity } = body;
+
+    const cartItem = await prisma.cart.findUnique({
+      where: {
+        id: itemId,
+      },
+    });
+
+    if (!cartItem) {
+      return NextResponse.json("Item not found", { status: 404 });
+    }
+
+    // Calculate unit price based on previous total price and quantity
+    // This ensures sizes and extras are included in the new total
+    const unitPrice = cartItem.totalPrice / cartItem.quantity;
+    const newTotalPrice = unitPrice * quantity;
+
     await prisma.cart.update({
       where: {
         id: itemId,
       },
       data: {
         quantity: quantity,
+        totalPrice: newTotalPrice,
       },
     });
     return NextResponse.json("Item updated successfully", { status: 200 });

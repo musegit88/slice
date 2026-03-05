@@ -100,10 +100,15 @@ const CartItemCard = ({ cartItems }) => {
           // if the user is not logged in use the current index of the item to update the quantity in local storage
           const increaseQunatity = cartItems.map(
             (item: Cart, index: number) => {
+              // calculate unit price based on previous total price and quantity
+              const unitPrice = item.totalPrice / item.quantity;
+              // calculate new total price
+              const newTotalPrice = unitPrice * (item.quantity + 1);
               if (index === currentIndex) {
                 return {
                   ...item,
                   quantity: item.quantity + 1,
+                  totalPrice: newTotalPrice,
                 };
               }
               return item;
@@ -134,10 +139,15 @@ const CartItemCard = ({ cartItems }) => {
           // if the user is not logged in use the current index of the item to update the quantity in local storage
           const decreaseQunatity = cartItems.map(
             (item: Cart, index: number) => {
+              // calculate unit price based on previous total price and quantity
+              const unitPrice = item.totalPrice / item.quantity;
+              // calculate new total price
+              const newTotalPrice = unitPrice * (item.quantity - 1);
               if (index === currentIndex) {
                 return {
                   ...item,
                   quantity: item.quantity > 1 ? item.quantity - 1 : 1,
+                  totalPrice: newTotalPrice,
                 };
               }
               return item;
@@ -264,9 +274,7 @@ const CartItemCard = ({ cartItems }) => {
                 <h4 className="bg-blue-500 text-white rounded-sm px-1">
                   Total
                 </h4>
-                <span>
-                  ${((item.totalPrice * item.quantity) / 100).toFixed(2)}
-                </span>
+                <span>${(item.totalPrice / 100).toFixed(2)}</span>
               </div>
               <div className="flex items-center justify-between gap-2">
                 <button

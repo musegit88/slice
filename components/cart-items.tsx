@@ -45,7 +45,7 @@ const CartItems = ({ userAddress }: { userAddress?: UserAddress[] }) => {
   const deliveryFee = 4.0;
   let total = 0;
   for (const item of cartItems) {
-    total = total + (item.totalPrice * item.quantity) / 100;
+    total = total + item.totalPrice / 100;
   }
 
   // initiate checkout process
