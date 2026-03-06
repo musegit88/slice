@@ -20,14 +20,46 @@ const MenuContent = async () => {
     orderBy: {
       createdAt: "desc",
     },
+    where: {
+      category: {
+        NOT: {
+          name: "pizza",
+        },
+        AND: {
+          name: "Salads",
+        },
+      },
+    },
   });
+
+  const selectPizza: MenuItemType[] = await prisma.menu.findMany({
+    where: {
+      category: {
+        name: "pizza",
+      },
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+  const selectSalad: MenuItemType[] = await prisma.menu.findMany({
+    where: {
+      category: {
+        name: "Salads",
+      },
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+  const allMenu = [...selectPizza, ...selectSalad, ...menu];
   const category: Category[] = await prisma.category.findMany({
     include: {
       menu: true,
     },
   });
 
-  return <MenuList menuData={menu} categories={category} />;
+  return <MenuList menuData={allMenu} categories={category} />;
 };
 
 // Skeleton component
