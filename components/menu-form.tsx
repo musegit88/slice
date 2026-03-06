@@ -55,7 +55,6 @@ const MenuForm = ({ initialData }: { initialData: MenuItemType }) => {
       extras: initialData?.extras || [],
     },
   });
-  console.log(isDirty);
   // Register manual fields for validation
   useEffect(() => {
     register("categoryId", { required: "Category is required" });
