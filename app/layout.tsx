@@ -3,7 +3,7 @@ import ToasterProvider from "@/components/providers/toast-provider";
 import CartProvider from "@/components/providers/cart-providers";
 import localFont from "next/font/local";
 import ProvideSession from "@/components/providers/session-provider";
-
+import { SpeedInsights } from "@vercel/speed-insights/next";
 const poppins = localFont({
   src: [
     {
