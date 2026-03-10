@@ -48,6 +48,7 @@ export default function RootLayout({
             <CartProvider>
               <ToasterProvider />
               {children}
+              <SpeedInsights />
             </CartProvider>
           </ProvideSession>
         </main>
