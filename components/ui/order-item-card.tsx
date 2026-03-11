@@ -28,7 +28,7 @@ const OrderItemCard = ({ order }: { order: OrderType }) => {
   const deliveryFee = 4.0;
   let total = 0;
   for (const item of order.cartItems) {
-    total = total + (item.totalPrice * item.quantity) / 100;
+    total = total + item.totalPrice / 100;
   }
 
   // soft delete the order
