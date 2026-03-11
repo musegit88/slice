@@ -4,7 +4,7 @@ import Image from "next/image";
 import Close from "../ui/icons/close";
 import ShoppingCart from "../ui/icons/shopping-cart";
 import { SizesAndExtraProps, MenuItemType } from "@/types";
-import { ChangeEvent, useContext, useState } from "react";
+import { ChangeEvent, useContext, useEffect, useState } from "react";
 import { CartContext } from "../providers/cart-providers";
 import toast from "react-hot-toast";
 import Minus from "../ui/icons/minus";
@@ -31,6 +31,16 @@ const MenuModal = ({ isOpen, onClose, selected }: MenuModalProps) => {
     [],
   );
   const [quantity, setQuantity] = useState(1);
+
+  // Lock body scroll while the modal is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.classList.add("overflow-hidden");
+    } else {
+      document.body.classList.remove("overflow-hidden");
+    }
+    return () => document.body.classList.remove("overflow-hidden");
+  }, [isOpen]);
 
   const handleExtra = (
     e: ChangeEvent<HTMLInputElement>,
@@ -142,6 +152,7 @@ const MenuModal = ({ isOpen, onClose, selected }: MenuModalProps) => {
                               src={item.image}
                               alt=""
                               fill
+                              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                               className="object-contain"
                             />
                           </div>
