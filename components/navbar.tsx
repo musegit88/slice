@@ -29,13 +29,14 @@ const Navbar = ({ currentUser }) => {
   return (
     <>
       <div className="hidden sm:flex sm:items-center sm:justify-between">
-        <Link href={"/"} className="text-primary font-bold">
+        <Link href={"/"} className="w-16 h-16">
           <Image
             src="/s&s.png"
             width={100}
             height={100}
             alt="logo"
-            className="w-16 h-16 object-contain"
+            priority
+            className="w-full h-full object-contain"
           />
         </Link>
         <div className="hidden sm:flex items-center justify-center gap-5">
@@ -93,17 +94,6 @@ const Navbar = ({ currentUser }) => {
                   pathname === "/cart" && "text-primary",
                 )}
               />
-              {/* {currentUser && (
-                <div
-                  className={cn(
-                    cartItems.length > 0
-                      ? "absolute -top-1 right-0 bg-secondary rounded-full w-5 h-5 text-sm text-center text-white"
-                      : "",
-                  )}
-                >
-                  <span>{cartItems.length === 0 ? "" : cartItems?.length}</span>
-                </div>
-              )} */}
               <div
                 className={cn(
                   cartItems.length > 0
@@ -137,19 +127,6 @@ const Navbar = ({ currentUser }) => {
                   pathname === "/cart" && "text-primary",
                 )}
               />
-              {/* {currentUser && (
-                <div
-                  className={cn(
-                    cartItems.length > 0
-                      ? "absolute -top-1 right-0 bg-secondary rounded-full sm:w-5 sm:h-5 w-4 h-4 text-white"
-                      : "",
-                  )}
-                >
-                  <span className="text-xs sm:text-sm flex items-center justify-center h-full">
-                    {cartItems.length === 0 ? "" : cartItems.length}
-                  </span>
-                </div>
-              )} */}
               <div
                 className={cn(
                   cartItems.length > 0

@@ -23,20 +23,20 @@ const Hero = () => {
             </Link>
           </div>
         </div>
-        <div className="relative flex-1">
-          <Link
-            title="Image By svstudioart"
-            href="https://www.freepik.com/free-ai-image/tasty-top-view-sliced-pizza-italian-traditional-round-pizza_40583114.htm#query=pizza%20png&position=4&from_view=keyword&track=ais&uuid=abebeaa1-477e-4a1e-ba19-0b00557362b7"
-          >
-            <Image
-              src={"/pizza.png"}
-              alt="pizza_image"
-              fill
-              priority
-              className="object-contain"
-            />
-          </Link>
-        </div>
+        <Link
+          title="Image By svstudioart"
+          href="https://www.freepik.com/free-ai-image/tasty-top-view-sliced-pizza-italian-traditional-round-pizza_40583114.htm#query=pizza%20png&position=4&from_view=keyword&track=ais&uuid=abebeaa1-477e-4a1e-ba19-0b00557362b7"
+          className="relative flex-1"
+        >
+          <Image
+            src={"/pizza.png"}
+            alt="pizza_image"
+            fill
+            priority
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            className="object-contain"
+          />
+        </Link>
       </section>
       {/* Mobile */}
       <section className="md:hidden flex flex-col">
