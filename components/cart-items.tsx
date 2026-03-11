@@ -225,6 +225,7 @@ const CartItems = ({ userAddress }: { userAddress?: UserAddress[] }) => {
                       </label>
                       <input
                         title="label"
+                        id="label"
                         name="label"
                         type="text"
                         disabled
@@ -239,6 +240,7 @@ const CartItems = ({ userAddress }: { userAddress?: UserAddress[] }) => {
                       </label>
                       <input
                         title="phone"
+                        id="phone"
                         name="phone"
                         type="tel"
                         disabled
@@ -253,6 +255,7 @@ const CartItems = ({ userAddress }: { userAddress?: UserAddress[] }) => {
                       </label>
                       <input
                         title="street"
+                        id="street"
                         name="street"
                         type="text"
                         disabled
@@ -270,6 +273,7 @@ const CartItems = ({ userAddress }: { userAddress?: UserAddress[] }) => {
                       </label>
                       <input
                         title="house number"
+                        id="number"
                         name="number"
                         type="text"
                         disabled
@@ -300,6 +304,7 @@ const CartItems = ({ userAddress }: { userAddress?: UserAddress[] }) => {
                           </label>
                           <input
                             title="block"
+                            id="block"
                             type="text"
                             name="block"
                             value={userAddress[0].block}
@@ -314,6 +319,7 @@ const CartItems = ({ userAddress }: { userAddress?: UserAddress[] }) => {
                           </label>
                           <input
                             title="floor"
+                            id="floor"
                             disabled
                             type="text"
                             name="floor"

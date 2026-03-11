@@ -194,6 +194,7 @@ const ProfileEdit = ({
               type="email"
               value={formatedData.email}
               disabled
+              autoComplete="on"
             />
           </div>
           <div>
@@ -201,8 +202,10 @@ const ProfileEdit = ({
               Name
             </label>
             <input
+              id="name"
               disabled={loading}
               type="text"
+              autoComplete="on"
               {...register("name", {
                 minLength: 4,
                 required: true,
@@ -317,8 +320,10 @@ const ProfileEdit = ({
                     Label
                   </label>
                   <input
+                    id={`addresses.${index}.label`}
                     type="text"
                     disabled={loading}
+                    autoComplete="on"
                     {...register(`addresses.${index}.label`, {
                       required: true,
                       minLength: 2,
@@ -343,12 +348,13 @@ const ProfileEdit = ({
                 </div>
                 <div>
                   <label
-                    htmlFor={`addresses.${index}.phone`}
+                    htmlFor={`addresses.${index}.phonenumber`}
                     className="text-xs sm:text-sm"
                   >
                     Phone number
                   </label>
                   <PhoneInput
+                    id={`addresses.${index}.phonenumber`}
                     placeholder="Enter phone number"
                     international
                     countrySelectProps={{
@@ -391,8 +397,10 @@ const ProfileEdit = ({
                     Street name
                   </label>
                   <input
+                    id={`addresses.${index}.street`}
                     type="text"
                     disabled={loading}
+                    autoComplete="on"
                     {...register(`addresses.${index}.street`)}
                   />
                 </div>
@@ -404,13 +412,16 @@ const ProfileEdit = ({
                     House Number
                   </label>
                   <input
+                    id={`addresses.${index}.number`}
                     type="text"
                     disabled={loading}
+                    autoComplete="on"
                     {...register(`addresses.${index}.housenumber`)}
                   />
                 </div>
                 <div className="flex items-center gap-x-2">
                   <input
+                    id={`addresses.${index}.isApartement`}
                     type="checkbox"
                     disabled={loading}
                     {...register(`addresses.${index}.isApartement`)}
@@ -433,8 +444,10 @@ const ProfileEdit = ({
                         Block
                       </label>
                       <input
+                        id={`addresses.${index}.block`}
                         type="text"
                         disabled={loading}
+                        autoComplete="on"
                         {...register(`addresses.${index}.block`, {
                           required: getValues(
                             `addresses.${index}.isApartement`,
@@ -456,8 +469,10 @@ const ProfileEdit = ({
                         Floor
                       </label>
                       <input
+                        id={`addresses.${index}.floor`}
                         type="text"
                         disabled={loading}
+                        autoComplete="on"
                         {...register(`addresses.${index}.floor`, {
                           required: getValues(
                             `addresses.${index}.isApartement`,
