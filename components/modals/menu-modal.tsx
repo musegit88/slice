@@ -31,6 +31,17 @@ const MenuModal = ({ isOpen, onClose, selected }: MenuModalProps) => {
     [],
   );
   const [quantity, setQuantity] = useState(1);
+  const [direction, setDirection] = useState<"up" | "down">("up");
+
+  const incrementQuantity = () => {
+    setDirection("up");
+    setQuantity((prev) => prev + 1);
+  };
+
+  const decrementQuantity = () => {
+    setDirection("down");
+    setQuantity((prev) => prev - 1);
+  };
 
   // Lock body scroll while the modal is open
   useEffect(() => {
@@ -241,20 +252,33 @@ const MenuModal = ({ isOpen, onClose, selected }: MenuModalProps) => {
                     ))}
                     <div className="flex items-center justify-between gap-2">
                       <button
+                        title="decrement quantity"
                         disabled={quantity === 1}
-                        onClick={() =>
-                          setQuantity(quantity > 1 && quantity - 1)
-                        }
-                        className="bg-secondary text-2xl text-white px-4 py-2 rounded-tl-full rounded-bl-full disabled:bg-secondary/50"
+                        onClick={() => decrementQuantity()}
+                        className="bg-secondary text-2xl text-white px-4 py-2 rounded-tl-full rounded-bl-full disabled:bg-secondary/50 disabled:cursor-not-allowed"
                       >
                         <Minus className="w-6 h-6" />
                       </button>
-                      <span className="text-2xl text-white text-center bg-secondary py-1 w-full">
-                        {quantity}
+                      <span
+                        key={quantity}
+                        className={cn(
+                          "text-2xl text-white text-center bg-secondary py-1 w-full",
+                        )}
+                      >
+                        <p
+                          className={cn(
+                            direction === "up"
+                              ? "qty-counter-up"
+                              : "qty-counter-down",
+                          )}
+                        >
+                          {quantity}
+                        </p>
                       </span>
                       <button
-                        onClick={() => setQuantity(quantity + 1)}
-                        className="bg-secondary text-2xl text-white px-4 py-2 rounded-tr-full rounded-br-full"
+                        title="increment quantity"
+                        onClick={() => incrementQuantity()}
+                        className="bg-secondary text-2xl text-white px-4 py-2 rounded-tr-full rounded-br-full disabled:bg-secondary/50 disabled:cursor-not-allowed"
                       >
                         <Plus className="w-6 h-6" />
                       </button>

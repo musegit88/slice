@@ -103,3 +103,35 @@ input[type="tel"]:focus-within {
     clip-path: inset(0 -34% 0 0);
   }
 }
+
+/* Quantity counter slide animations */
+
+@keyframes qty-counter-up {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes qty-counter-down {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.qty-counter-up {
+  animation: qty-counter-up 0.2s ease-out;
+}
+
+.qty-counter-down {
+  animation: qty-counter-down 0.2s ease-out;
+}
