@@ -83,7 +83,6 @@ const MenuModal = ({ isOpen, onClose, selected }: MenuModalProps) => {
   const handleClose = () => {
     onClose();
     const mainUrl = window.location.pathname;
-    setSelectedSizes(null);
     setSelectedExtras([]);
     setQuantity(1);
     return window.history.replaceState(null, null, mainUrl);
